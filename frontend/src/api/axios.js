@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://cybersecurity-awareness-platform.onrender.com/api';
+const API_URL = 'cyber-security-awareness-platform-u.vercel.app/api';
 
 const api = axios.create({
   baseURL: API_URL,
