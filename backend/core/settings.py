@@ -157,7 +157,7 @@ SIMPLE_JWT = {
 
 # CORS
 # Get frontend URL from environment variable, fallback to known URLs
-frontend_url = os.getenv('FRONTEND_URL', 'https://cybersecurityap.vercel.app')
+frontend_url = 'https://cybersecurityap.vercel.app'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
