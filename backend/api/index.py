@@ -36,7 +36,7 @@ def handler(event, context):
         'SERVER_PORT': os.environ['SERVER_PORT'],
         'wsgi.url_scheme': event.get('headers', {}).get('x-forwarded-proto', 'https'),
         'wsgi.input': body,
-        'wsgi.version': (1, n),
+        'wsgi.version': (1, 0),
         'wsgi.errors': open(os.devnull, 'w'),
         'wsgi.multithread': False,
         'wsgi.multiprocess': False,
@@ -49,6 +49,20 @@ def handler(event, context):
         if key not in ['CONTENT_TYPE', 'CONTENT_LENGTH']:
             key = 'HTTP_' + key
         environ[key] = value
+    
+    # Handle OPTIONS preflight requests
+    if event['httpMethod'] == 'OPTIONS':
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': 'https://cybersecurityap.vercel.app',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-CSRFToken, X-Requested-With',
+                'Access-Control-Allow-Credentials': 'true',
+                'Access-Control-Max-Age': '86400',
+            },
+            'body': ''
+        }
     
     # Call the Django application
     response_status = []
@@ -65,9 +79,19 @@ def handler(event, context):
     # Extract status code
     status_code = int(response_status[0].split(' ')[0])
     
+    # Add CORS headers to response
+    cors_headers = {
+        'Access-Control-Allow-Origin': 'https://cybersecurityap.vercel.app',
+        'Access-Control-Allow-Credentials': 'true',
+    }
+    
+    # Merge CORS headers with Django response headers
+    response_headers_dict = dict(response_headers)
+    response_headers_dict.update(cors_headers)
+    
     # Return the response in Vercel format
     return {
         'statusCode': status_code,
-        'headers': dict(response_headers),
+        'headers': response_headers_dict,
         'body': response_body.decode('utf-8') if isinstance(response_body, bytes) else response_body
     }

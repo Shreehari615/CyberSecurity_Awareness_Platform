@@ -156,17 +156,77 @@ SIMPLE_JWT = {
 }
 
 # CORS
-frontend_url = "https://cybersecurityap.vercel.app/"
+# Get frontend URL from environment variable, fallback to known URLs
+frontend_url = os.getenv('FRONTEND_URL', 'https://cybersecurityap.vercel.app')
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-     "*",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    frontend_url,
 ]
 
-if frontend_url:
-    CORS_ALLOWED_ORIGINS.append(frontend_url)
+# Allow additional origins from environment variable (comma-separated)
+additional_origins = os.getenv('CORS_ADDITIONAL_ORIGINS', '')
+if additional_origins:
+    CORS_ALLOWED_ORIGINS.extend([origin.strip() for origin in additional_origins.split(',')])
+
+# For development, you can also use CORS_ALLOW_ALL_ORIGINS = True (but not with credentials)
+# CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOW_CREDENTIALS = True
+
+# Additional CORS settings for Vercel
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'x-forwarded-for',
+    'x-forwarded-proto',
+    'x-forwarded-host',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Allow cookies to be sent cross-origin
+CSRF_TRUSTED_ORIGINS = [
+    "https://cybersecurityap.vercel.app",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# Add additional CSRF trusted origins from environment
+additional_csrf = os.getenv('CSRF_ADDITIONAL_ORIGINS', '')
+if additional_csrf:
+    CSRF_TRUSTED_ORIGINS.extend([origin.strip() for origin in additional_csrf.split(',')])
+
+# For session cookies in cross-origin requests
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+
+# For session cookies in cross-origin requests
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
