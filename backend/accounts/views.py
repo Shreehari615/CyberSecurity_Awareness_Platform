@@ -78,7 +78,10 @@ class SendOTPView(APIView):
         expires = timezone.now() + timezone.timedelta(minutes=10)
 
         EmailOTP.objects.create(email=email, otp=otp, expires_at=expires)
-
+        print("EMAIL_HOST:", settings.EMAIL_HOST)
+        print("EMAIL_PORT:", settings.EMAIL_PORT)
+        print("EMAIL_USER:", settings.EMAIL_HOST_USER)
+        print("Sending email...")
         send_mail(
             subject='CyberAware — Email Verification Code',
             message=f'Your verification code is: {otp}\n\nThis code expires in 10 minutes.',
