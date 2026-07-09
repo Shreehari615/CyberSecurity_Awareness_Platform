@@ -71,7 +71,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 
 
-DATABASE_URL = "postgresql://cyberuser:vTh96waRnTEj2OCak0D1qxkCXSuGMrTi@dpg-d979joepuehc73fmjjlg-a/cybersecurity_ns0x"
+DATABASE_URL = "postgresql://postgres:Shriram@123@db.derkuyyijoggrukjjlbs.supabase.co:5432/postgres"
 
 if DATABASE_URL:
     DATABASES = {
