@@ -84,7 +84,7 @@ class SendOTPView(APIView):
             message=f'Your verification code is: {otp}\n\nThis code expires in 10 minutes.',
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[email],
-            fail_silently=True,
+            fail_silently=False,
         )
 
         response_data = {'message': 'Verification code sent to your email.'}
