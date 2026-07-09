@@ -71,7 +71,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = "postgresql://cyberuser:vTh96waRnTEj2OCak0D1qxkCXSuGMrTi@dpg-d979joepuehc73fmjjlg-a/cybersecurity_ns0x"
 
 if DATABASE_URL:
     DATABASES = {
